@@ -5,4 +5,5 @@ coverage/
 *.log
 .DS_Store
 .env
-loginexample/node_modules
+package-lock.json
+package.json

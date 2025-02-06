@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+      integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, sans-serif;
+      }
+
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background: linear-gradient(135deg, #1d2671, #c33764);
+      }
+
+      .box {
+        position: relative;
+        width: 350px;
+        background-color: #c4b7b7;
+        border-radius: 15px;
+        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+        overflow: hidden;
+        text-align: center;
+        padding: 30px;
+      }
+
+      .wave-one,
+      .wave-two,
+      .wave-three {
+        position: absolute;
+        width: 100%;
+        height: 100px;
+        left: 0;
+        bottom: 0;
+        background: rgba(255, 255, 255, 0.5);
+        border-radius: 50%;
+        animation: wave 5s infinite ease-in-out;
+        z-index: -1;
+      }
+
+      .wave-one {
+        animation-delay: 0s;
+      }
+
+      .wave-two {
+        bottom: -30px;
+        animation-delay: 1s;
+      }
+
+      .wave-three {
+        bottom: -60px;
+        animation-delay: 2s;
+      }
+
+      @keyframes wave {
+        0% {
+          transform: translateX(-50%);
+        }
+        50% {
+          transform: translateX(50%);
+        }
+        100% {
+          transform: translateX(-50%);
+        }
+      }
+
+      #weathercon {
+        margin: 20px 0;
+        font-size: 64px;
+      }
+
+      .info h2 {
+        font-size: 24px;
+        color: #333;
+        margin-bottom: 10px;
+      }
+
+      .info p {
+        font-size: 14px;
+        color: #777;
+      }
+
+      .info h1 {
+        font-size: 48px;
+        color: #333;
+        margin: 15px 0;
+      }
+
+      .info h3 {
+        font-size: 18px;
+        color: #555;
+      }
+
+      .temp_min_max {
+        margin-top: 5px;
+      }
+
+      .fa-sun {
+        animation: rotate 4s infinite linear;
+      }
+
+      @keyframes rotate {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="box">
+      <div id="weathercon">
+        <i class="fa-solid fa-sun" style="color: rgb(253, 250, 79)"></i>
+      </div>
+      <div class="info">
+        <h2 class="location">
+          <i class="fa-solid fa-street-view" style="color: white"></i>{%city%},
+          {%country%}
+        </h2>
+        <p id="date"></p>
+        <h1 class="temp">{%tempval%}&deg;</h1>
+        <h3 class="temp_min_max">
+          Min {%tempmin%}&deg; | Max {%tempmax%}&deg;
+        </h3>
+        <!-- {%tempmax%} these are the placeholder later node bata aako data yesma render hunxa -->
+      </div>
+    </div>
+
+    <!-- now JS code for real time TIME -->
+
+    <script>
+      const curDate = document.getElementById("date");
+
+      const getCurDay = () => {
+        var weekday = new Array(7);
+        weekday[0] = "Sunday";
+        weekday[1] = "Monday";
+        weekday[2] = "Tuesday";
+        weekday[3] = "Wednesday";
+        weekday[4] = "Thursday";
+        weekday[5] = "Friday";
+        weekday[6] = "Saturday";
+
+        let today = new Date(); //  new Date(); is class and currenTime obj stores the current time
+
+        return weekday[today.getDay()]; // getDay() fetches current day from Date class which will be index 0 to 6
+      };
+
+      const getCurTime = () => {
+        var months = [
+          "Jan",
+          "Feb",
+          "Mar",
+          "Apr",
+          "May",
+          "June",
+          "July",
+          "Aug",
+          "Sept",
+          "Oct",
+          "Nov",
+          "Dec",
+        ];
+
+        let timeDate = new Date();
+        let month = timeDate.getMonth();
+        let year = timeDate.getFullYear();
+        let date = timeDate.getDate();
+
+        let hours = timeDate.getHours();
+        let mins = timeDate.getMinutes();
+
+        let AM_PM = "AM"; // default
+
+        if (hours >= 12) {
+          // If it's 12 noon or later
+          AM_PM = "PM";
+          if (hours > 12) {
+            // Convert to 12-hour format if greater than 12
+            hours = hours - 12;
+          }
+        } else if (hours === 0) {
+          // Handle midnight (00:00 in 24-hour format)
+          hours = 12;
+        }
+
+        if (mins < 10) {
+          mins = "0" + mins;
+        }
+
+        return `${months[month]}-${date} | ${hours}:${mins} ${AM_PM}`;
+      };
+
+      curDate.innerHTML = getCurDay() + " | " + getCurTime();
+    </script>
+  </body>
+</html>
